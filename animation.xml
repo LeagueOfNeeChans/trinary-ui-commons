@@ -1,0 +1,14 @@
+<animation id="blink" type="framestrip">
+	<resource>yumi.blink</resource>
+	<blocking>false</blocking>
+	<framesPerSecond>10</framesPerSecond>
+	<loop>
+		<times>-1</times>
+	</loop>
+	<frameAttributes>
+		<width>100</width>
+		<height>300</height>
+		<count>20</count>
+	</frameAttributes>
+	<frames>1, 2, 3-5, 7, 9, 11-20</frames>
+</animation>
