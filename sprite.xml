@@ -1,0 +1,20 @@
+<sprite id="melon">
+	<resource>vn.actors.melon</resource>
+	<frameAttributes>
+			<width>100</width>
+			<height>200</height>
+			<count>5</count>
+			<rows>1</rows>
+			<cols>5</cols>
+	</frameAttributes>
+	<animations>
+		<animation id="walk" type="framestrip">
+			<blocking>false</blocking>
+			<framesPerSecond>10</framesPerSecond>
+			<loop>
+				<times>-1</times>
+			</loop>
+			<frames>1-5</frames>
+		</animation>
+	</animations>
+</sprite>

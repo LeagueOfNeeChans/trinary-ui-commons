@@ -1,22 +1,27 @@
 package com.trinary.ui.commons;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Animation {
+	@XmlTransient
+	protected Sprite sprite;
+	
+	@XmlTransient
+	protected Range range;
+	
 	@XmlAttribute(name="id")
 	protected String id;
 	
 	@XmlAttribute(name="type")
 	protected String type;
-	
-	@XmlElement
-	protected String resource;
 	
 	@XmlElement
 	protected Loop loop;
@@ -27,9 +32,6 @@ public class Animation {
 	@XmlElement
 	protected Boolean blocking;
 	
-	@XmlElement
-	protected FrameAttributes frameAttributes;
-	
 	@XmlElement(name="frames")
 	protected String frames;
 	
@@ -37,22 +39,20 @@ public class Animation {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Animation(String id, String type, String resource, Loop loop,
-			Integer framesPerSecond, Boolean blocking,
-			FrameAttributes dimensions, String frames) {
+	public Animation(String id, String type, Loop loop,
+			Integer framesPerSecond, Boolean blocking, String frames) {
 		super();
 		this.id = id;
 		this.type = type;
-		this.resource = resource;
 		this.loop = loop;
 		this.framesPerSecond = framesPerSecond;
 		this.blocking = blocking;
-		this.frameAttributes = dimensions;
 		this.frames = frames;
 	}
 	
-	public Range getFramesArray() {
-		return new Range(frames);
+	public void afterUnmarshal(Unmarshaller u, Object parent) {
+		this.sprite = (Sprite)parent;
+		this.range = new Range(frames, this.sprite.frameAttributes.cols, this.sprite.frameAttributes.rows);
 	}
 
 	public String getId() {
@@ -69,14 +69,6 @@ public class Animation {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public String getResource() {
-		return resource;
-	}
-
-	public void setResource(String resource) {
-		this.resource = resource;
 	}
 
 	public Loop getLoop() {
@@ -103,14 +95,6 @@ public class Animation {
 		this.blocking = blocking;
 	}
 
-	public FrameAttributes getFrameAttributes() {
-		return frameAttributes;
-	}
-
-	public void setFrameAttributes(FrameAttributes frameAttributes) {
-		this.frameAttributes = frameAttributes;
-	}
-
 	public String getFrames() {
 		return frames;
 	}
@@ -121,10 +105,10 @@ public class Animation {
 
 	@Override
 	public String toString() {
-		return "Animation [id=" + id + ", type=" + type + ", resource="
-				+ resource + ", loop=" + loop + ", framesPerSecond="
+		return "Animation [id=" + id + ", type=" + type 
+				+ ", loop=" + loop + ", framesPerSecond="
 				+ framesPerSecond + ", blocking=" + blocking
-				+ ", frameAttributes=" + frameAttributes + ", frames=" + getFramesArray()
+				+ ", frames=" + range
 				+ "]";
 	}
 }

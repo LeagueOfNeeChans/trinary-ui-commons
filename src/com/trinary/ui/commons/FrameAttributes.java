@@ -9,17 +9,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class FrameAttributes {
 	@XmlElement
-	protected Integer width, height, count;
+	protected Integer width, height, count, rows, cols;
 	
 	public FrameAttributes() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FrameAttributes(Integer width, Integer height, Integer count) {
+	public FrameAttributes(Integer width, Integer height, Integer count, Integer rows, Integer cols) {
 		super();
 		this.width = width;
 		this.height = height;
 		this.count = count;
+		this.rows = rows;
+		this.cols = cols;
 	}
 
 	public Integer getWidth() {
@@ -46,11 +48,26 @@ public class FrameAttributes {
 		this.count = count;
 	}
 
+	public Integer getRows() {
+		return rows;
+	}
+
+	public void setRows(Integer rows) {
+		this.rows = rows;
+	}
+
+	public Integer getCols() {
+		return cols;
+	}
+
+	public void setCols(Integer cols) {
+		this.cols = cols;
+	}
+
 	@Override
 	public String toString() {
 		return "FrameAttributes [width=" + width + ", height=" + height
-				+ ", count=" + count + "]";
+				+ ", count=" + count + ", rows=" + rows + ", cols=" + cols
+				+ "]";
 	}
-	
-	
 }
