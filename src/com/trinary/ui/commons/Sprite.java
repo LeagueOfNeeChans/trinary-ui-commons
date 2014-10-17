@@ -3,6 +3,7 @@ package com.trinary.ui.commons;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.Unmarshaller;
@@ -33,6 +34,11 @@ public class Sprite {
 	@XmlElementWrapper(name="animations")
 	@XmlElement(name="animation")
 	protected List<Animation> animations;
+	
+	protected HashMap<String, Animation> animationMap = new HashMap<String, Animation>();
+	protected int currentFrame = 0;
+	protected Animation currentAnimation;
+	protected int currentAnimationIndex = 0;
 	
 	public Sprite() {
 		// TODO Auto-generated constructor stub
@@ -83,6 +89,73 @@ public class Sprite {
 	
 	public void afterUnmarshal(Unmarshaller u, Object parent) {
 		loadFrames();
+		
+		for (Animation animation : animations) {
+			animationMap.put(animation.getId(), animation);
+		}
+		
+		currentAnimation = animations.get(0);
+	}
+	
+	public void setCurrentAnimation(String animationName) {
+		Animation animation = animationMap.get(animationName);
+		
+		// For testing
+		currentAnimationIndex = animations.indexOf(animation);
+		
+		if (animation != null) {
+			currentAnimation = animation;
+		}
+		
+		currentFrame = 0;
+	}
+	
+	public void setCurrentAnimation(int index) {
+		// For testing
+		currentAnimationIndex = index;
+		
+		currentAnimation = animations.get(index);
+		
+		currentFrame = 0;
+	}
+	
+	// For testing
+	public void nextAnimation() {
+		if (currentAnimationIndex < animations.size() - 1) {
+			currentAnimationIndex++;
+		} else {
+			currentAnimationIndex = 0;
+		}
+		
+		currentAnimation = animations.get(currentAnimationIndex);
+		
+		currentFrame = 0;
+	}
+	
+	// This would depend on loop type
+	public void step() {
+		if (currentFrame < currentAnimation.getRange().getIndexes().size() - 1) {
+			currentFrame++;
+		} else {
+			currentFrame = 0;
+		}
+	}
+	
+	public BufferedImage getCurrentFrame() {
+		BufferedImage frame;
+		try {
+			frame = frames.get(currentAnimation.getRange().getIndexes().get(currentFrame) - 1);
+		} catch (Exception e) {
+			System.out.println("EXCEPTION: " + e.getMessage());
+			return ResourceStore.getResource("_black").getImage();
+		}
+		
+		if (frame == null) {
+			System.out.println("NULL FRAME");
+			return ResourceStore.getResource("_black").getImage();
+		}
+		
+		return frame;
 	}
 
 	public FrameAttributes getFrameAttributes() {

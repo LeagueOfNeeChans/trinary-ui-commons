@@ -1,6 +1,7 @@
 package com.trinary.ui.commons;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,19 +70,23 @@ public class Range {
 		Integer yn = yTo != null ? Integer.parseInt(yTo) : null;
 		ArrayList<Integer> numbers = new ArrayList<Integer>();
 		
-		if (xFrom != null && xTo != null && yFrom != null && yTo == null) {			// From row m to n at column p
-			for (int i = xm - 1; i < xn; i++) {
-				numbers.add(i + ym * this.cols);
+		if (xFrom != null && xTo != null && yFrom != null && yTo == null) {			// From column m to n at row p
+			for (int i = xm; i <= xn; i++) {
+				numbers.add(((ym - 1) * this.cols) + i);
 			}
-		} else if (xFrom != null && xTo == null && yFrom != null && yTo != null) {	// From column m to n at row p
+		} else if (xFrom != null && xTo == null && yFrom != null && yTo != null) {	// From row m to n at column p
 			for (int i = ym - 1; i < yn; i++) {
-				numbers.add(i * this.cols + xm);
+				numbers.add((i * this.cols) + xm);
 			}
 		} else if (xFrom != null && xTo == null && yFrom != null && yTo == null) {  // Row m at column p
-			numbers.add(xm * rows + ym);
+			numbers.add(((ym - 1) * this.cols) + xm);
 		}
 		
 		return numbers;
+	}
+	
+	public List<Integer> getIndexes() {
+		return ranges;
 	}
 	
 	public String toString() {

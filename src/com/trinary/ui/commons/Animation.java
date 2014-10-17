@@ -103,6 +103,14 @@ public class Animation {
 		this.frames = frames;
 	}
 
+	public Range getRange() {
+		return range;
+	}
+
+	public void setRange(Range range) {
+		this.range = range;
+	}
+
 	@Override
 	public String toString() {
 		return "Animation [id=" + id + ", type=" + type 
