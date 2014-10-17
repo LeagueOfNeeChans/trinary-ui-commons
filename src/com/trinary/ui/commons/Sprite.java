@@ -113,7 +113,7 @@ public class Sprite {
 	public void setCurrentAnimation(int index) {
 		// For testing
 		currentAnimationIndex = index;
-		
+
 		currentAnimation = animations.get(index);
 		
 		currentFrame = 0;
