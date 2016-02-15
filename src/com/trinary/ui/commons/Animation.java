@@ -17,6 +17,9 @@ public class Animation {
 	@XmlTransient
 	protected Range range;
 	
+	@XmlTransient
+	protected Integer loopCounter = 0;
+	
 	@XmlAttribute(name="id")
 	protected String id;
 	
@@ -109,6 +112,18 @@ public class Animation {
 
 	public void setRange(Range range) {
 		this.range = range;
+	}
+	
+	public void resetLoopCounter() {
+		this.loopCounter = 0;
+	}
+	
+	public void incrementLoopCounter() {
+		this.loopCounter++;
+	}
+	
+	public Boolean shouldLoopAgain() {
+		return this.loop.getTimes() == -1 || this.loopCounter < this.loop.getTimes();
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.trinary.ui.config.ResourceStore;
 import com.trinary.ui.elements.Resource;
@@ -39,6 +40,9 @@ public class Sprite {
 	protected int currentFrame = 0;
 	protected Animation currentAnimation;
 	protected int currentAnimationIndex = 0;
+	
+	@XmlTransient
+	protected int frameCounter = 0;
 	
 	public Sprite() {
 		// TODO Auto-generated constructor stub
@@ -108,6 +112,7 @@ public class Sprite {
 		}
 		
 		currentFrame = 0;
+		currentAnimation.resetLoopCounter();
 	}
 	
 	public void setCurrentAnimation(int index) {
@@ -117,6 +122,7 @@ public class Sprite {
 		currentAnimation = animations.get(index);
 		
 		currentFrame = 0;
+		currentAnimation.resetLoopCounter();
 	}
 	
 	// For testing
@@ -130,14 +136,25 @@ public class Sprite {
 		currentAnimation = animations.get(currentAnimationIndex);
 		
 		currentFrame = 0;
+		currentAnimation.resetLoopCounter();
 	}
 	
 	// This would depend on loop type
 	public void step() {
+		// Limit step by frame rate of animation
+		frameCounter++;
+		if (frameCounter != Math.ceil(60/currentAnimation.getFramesPerSecond())) {
+			return;
+		}
+		frameCounter = 0;
+		
 		if (currentFrame < currentAnimation.getRange().getIndexes().size() - 1) {
 			currentFrame++;
 		} else {
-			currentFrame = 0;
+			if (currentAnimation.shouldLoopAgain()) {
+				currentFrame = 0;
+				currentAnimation.incrementLoopCounter();
+			}
 		}
 	}
 	
